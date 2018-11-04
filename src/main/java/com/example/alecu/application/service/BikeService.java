@@ -12,4 +12,6 @@ public interface BikeService {
     void save(Bike bike);
 
     Bike getOne(long id);
+
+    List<Bike> searchBikes(String bikeName);
 }

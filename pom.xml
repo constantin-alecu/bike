@@ -105,12 +105,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources/META-INF</directory>
-				<targetPath>META-INF/</targetPath>
-			</resource>
-		</resources>
 	</build>
 
 

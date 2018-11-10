@@ -5,7 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
+
+import javax.jms.*;
 
 @Component
 public class OrderTransactionSender {
@@ -15,8 +18,18 @@ public class OrderTransactionSender {
     @Autowired
     JmsTemplate jmsTemplate;
 
-    public void sendTransaction(Bike bike){
-        LOGGER.info("Sending a transaction");
-        jmsTemplate.convertAndSend(bike);
+    public void sendTransaction(final Bike bike){
+        MessageCreator messageCreator = new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+
+                ObjectMessage message = session.createObjectMessage(bike);
+                message.setJMSType("bike");
+                LOGGER.info("Sending message: " + message);
+
+                return message;
+            }
+        };
+        jmsTemplate.send(messageCreator);
     }
 }

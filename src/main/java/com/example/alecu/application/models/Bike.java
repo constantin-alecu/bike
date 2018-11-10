@@ -1,5 +1,6 @@
 package com.example.alecu.application.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Bike {
+public class Bike implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -84,6 +85,19 @@ public class Bike {
 	public void setContact(boolean contact) {
 		this.contact = contact;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Bike{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", phone='" + phone + '\'' +
+				", model='" + model + '\'' +
+				", serialNumber='" + serialNumber + '\'' +
+				", purchasePrice=" + purchasePrice +
+				", purchaseDate=" + purchaseDate +
+				", contact=" + contact +
+				'}';
+	}
 }

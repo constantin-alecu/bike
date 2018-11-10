@@ -1,0 +1,9 @@
+<Context>
+
+    <ResourceLink name="jdbc/bike"
+                  global="jdbc/bike"
+                  auth="Container"
+                  type="javax.sql.DataSource"
+    />
+
+</Context>

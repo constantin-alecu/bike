@@ -14,4 +14,6 @@ public interface BikeService {
     Bike getOne(long id);
 
     List<Bike> searchBikes(String bikeName);
+
+    List<Bike> searchBikesOnlyInDB(String bikeName);
 }

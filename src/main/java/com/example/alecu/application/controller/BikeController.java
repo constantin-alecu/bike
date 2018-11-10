@@ -22,9 +22,12 @@ public class BikeController {
 	private BikeService bikeService;
 
 	@GetMapping
-	public List<Bike> searchBikes(@RequestParam(value="searchText", required=false) String bikeName){
+	public List<Bike> searchBikes(@RequestParam(value="searchText", required=false) String bikeName,
+								  @RequestParam(value="database", required = false) Boolean databaseSearch){
 		if(bikeName == null || bikeName.isEmpty()) {
 			return bikeService.findAll();
+		}if(databaseSearch != null && databaseSearch){
+			return bikeService.searchBikesOnlyInDB(bikeName);
 		}else{
 			return bikeService.searchBikes(bikeName);
 		}

@@ -66,4 +66,12 @@ public class BikeServiceImpl implements BikeService{
 		return new ArrayList<>();
 
 	}
+
+	@Override
+	public List<Bike> searchBikesOnlyInDB(String bikeName) {
+		LOGGER.info("searching bikes ... [" + bikeName + "]");
+		return bikeRepository.findByModelContaining(bikeName);
+
+
+	}
 }

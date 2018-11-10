@@ -2,6 +2,7 @@ package com.example.alecu.application.service;
 
 import com.example.alecu.application.controller.BikeController;
 import com.example.alecu.application.models.Bike;
+import com.example.alecu.application.queue.OrderTransactionSender;
 import com.example.alecu.application.repositories.BikeRepository;
 import com.example.alecu.application.repositories.elasticsearch.ElasticSearchRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,6 +28,9 @@ public class BikeServiceImpl implements BikeService{
 	@Autowired
 	private ElasticSearchRepository elasticSearchRepository;
 
+	@Autowired
+	private OrderTransactionSender orderTransactionSender;
+
 	@Override
 	public List<Bike> findAll() {
 		return bikeRepository.findAll();
@@ -34,6 +38,10 @@ public class BikeServiceImpl implements BikeService{
 
 	@Override
 	public void save(Bike bike) {
+
+		//sending message to queue
+		orderTransactionSender.sendTransaction(bike);
+		//saving queue to DB
 		Bike saveBike = bikeRepository.save(bike);
 		ObjectMapper mapper = new ObjectMapper();
 		String bikeDocument = null;
@@ -42,6 +50,7 @@ public class BikeServiceImpl implements BikeService{
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
+		//sending bike to elastic search
 		if(bikeDocument != null){
 			elasticSearchRepository.index(bikeDocument, "bikes", "bikes", saveBike.getId() + "");
 		}
